@@ -253,11 +253,14 @@ function InteractiveVideo(params, id, contentData) {
     const textTracks = this.editor ? [] :
       (self.options.video.textTracks && self.options.video.textTracks.videoTrack ? self.options.video.textTracks.videoTrack : []);
 
+    var brightcoveVideoID = self.options.brightcoveVideoID ? self.options.brightcoveVideoID : self.options.video.brightcoveVideoID;
+
     // Start up the video player
     self.video = H5P.newRunnable({
       library: 'H5P.Video 1.3',
       params: {
         sources: self.options.video.files,
+        brightcoveVideoID,
         visuals: {
           poster: self.options.video.startScreenOptions.poster,
           controls: self.justVideo,

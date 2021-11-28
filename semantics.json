@@ -9,14 +9,20 @@
       {
         "name": "video",
         "type": "group",
-        "label": "Upload/embed video",
+        "label": "Setup video",
         "importance": "high",
         "fields": [
+          {
+            "name": "brightcoveVideoID",
+            "type": "text",
+            "label": "Video ID",
+            "description": "Brightcove Video ID",
+            "importance": "high"
+          },
           {
             "name": "files",
             "type": "video",
             "label": "Add a video",
-            "importance": "high",
             "description": "Click below to add a video you wish to use in your interactive video. You can add a video link or upload video files. It is possible to add several versions of the video with different qualities. To ensure maximum support in browsers at least add a version in webm and mp4 formats.",
             "extraAttributes": [
               "metadata"
@@ -35,7 +41,7 @@
                 "label": "The title of this interactive video",
                 "importance": "low",
                 "maxLength": 60,
-                "default": "BrightCove Interactive Video",
+                "default": "Brightcove Interactive Video",
                 "description": "Used in summaries, statistics etc."
               },
               {
