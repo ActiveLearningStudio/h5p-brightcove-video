@@ -20,6 +20,13 @@
             "importance": "high"
           },
           {
+            "name": "brightcoveVideoSearch",
+            "type": "text",
+            "label": "Browse Brightcove Videos",
+            "description": "Browse Brightcove Videos",
+            "widget": "brightcoveSearch"
+          },
+          {
             "name": "files",
             "type": "video",
             "label": "Add a video",
