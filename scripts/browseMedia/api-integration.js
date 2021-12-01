@@ -3,23 +3,15 @@ if (typeof H5PEditor !== 'undefined') {
     $
   ) {
     setTimeout(() => {
-      //$('.h5p-add-file').trigger('click');
-      $('.loadPlaylist').trigger('click');
-      console.log('Yahoo! looking!!!!!');
-      // var $wrapper = $("body .h5peditor")
-      //   .children()
-      //   .find(".content")
-      //   .children(".field-name-files")
-      //   .children(".h5p-dialog-anchor");
-      // var dialogUrlInputWraper = $wrapper.find(".h5p-file-url-wrapper");
-      // var playlistButton =
-      //   '<div class="h5p-playlist-button-wrapper">' +
-      //   '<button class="loadPlaylist">Browse Videos</button></div>';
-      // dialogUrlInputWraper.append(playlistButton);
+      var wrapper = $("body .h5peditor")
+        .children()
+        .find(".content")
+        .children(".field-name-brightcoveVideoID")
+        .children(".h5peditor-text");
       var playlistButton =
         '<div class="h5p-playlist-button-wrapper">' +
         '<button class="loadPlaylist">Browse Videos</button></div>';
-      $('#field-brightcovevideoid-13').append(playlistButton);
+      wrapper.after(playlistButton);
 
       var playlistModalWraper =
         '<div id="playlistContent" class="modal">' +
@@ -45,12 +37,9 @@ if (typeof H5PEditor !== 'undefined') {
         "</div>" +
         "</div>" +
         "</div>";
-      // var inputUrlWraper = $wrapper.children().children().find(".h5p-dialog-box");
-      $(".h5p-add-dialog-table").append(playlistModalWraper);
-
-      // var $loadPlaylist = dialogUrlInputWraper.find(".loadPlaylist");
-      // $loadPlaylist.click(function () {      
-      $(".loadPlaylist").click(function () {  
+      $('.field-name-brightcoveVideoID').before(playlistModalWraper);
+       
+      $(".loadPlaylist").click(function () {
         $('#input-playlist').val('')
         var modal = document.getElementById("playlistContent");
         modal.style.display = "block";
@@ -78,7 +67,6 @@ if (typeof H5PEditor !== 'undefined') {
 
         async function getBrightcoveList(filterVal = '', searchText = '') {
           $('#loaderDiv').attr('class', 'loader');
-          console.log('filtering with dd: ',filterVal);
           var searchQuery;
           if(filterVal == 'id' && searchText && searchText.length > 1){
             searchQuery = 'id='+searchText;
@@ -119,7 +107,7 @@ if (typeof H5PEditor !== 'undefined') {
                             '">' +
                             '<img class="play-list-video-bc" src="' +
                             item.images.thumbnail.src +
-                            '" width=250 height=250 data-url="' +
+                            '" width=250 height=250 data-videoid="' +
                             item.id +
                             '">' +
                             '<span class="brightcove-video-title">' +
@@ -130,7 +118,7 @@ if (typeof H5PEditor !== 'undefined') {
                         });
 
                         $(document).on("click", ".play-list-video-bc", function () {
-                          $(".h5p-file-url").val($(this).data("url"));
+                          wrapper.val($(this).data("videoid"));
                           $(".modal").css("display", "none");
                         });
                       } else {

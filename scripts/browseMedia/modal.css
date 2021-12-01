@@ -289,3 +289,9 @@ select::-ms-expand {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
+
+.field-name-brightcoveVideoID > .h5peditor-text{
+  float: left;
+  width: 50%;
+  margin-right: 10px;
+}
