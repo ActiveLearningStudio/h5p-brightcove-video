@@ -997,7 +997,7 @@ InteractiveVideo.prototype.loaded = function () {
 
   this.currentState = InteractiveVideo.LOADED;
 };
-
+var unca = [];
 /**
  * Initialize interaction at the given index.
  *
@@ -1026,17 +1026,21 @@ InteractiveVideo.prototype.initInteraction = function (index) {
   // handle display event
   interaction.on('display', function (event) {
     var $interaction = event.data;
+    // console.log("self", self);
+
+
     $interaction.appendTo(self.$overlay);
 
     // Make sure the interaction does not overflow videowrapper.
     interaction.repositionToWrapper(self.$videoWrapper);
 
     // Determine source type
-    var isYouTube = (self.video.pressToPlay !== undefined);
+    var isYouTube = self.video.pressToPlay !== undefined;
 
     // Consider pausing the playback
     delayWork(isYouTube ? 100 : null, function () {
-      var isPlaying = self.currentState === H5P.Video.PLAYING ||
+      var isPlaying =
+        self.currentState === H5P.Video.PLAYING ||
         self.currentState === H5P.Video.BUFFERING;
       if (isPlaying && interaction.pause()) {
         if (!self.focusInteraction) {
@@ -1058,6 +1062,306 @@ InteractiveVideo.prototype.initInteraction = function (index) {
     }, 0);
 
     self.toggleEndscreen(false);
+    if (parameters.action.metadata.contentType != "undefined") {
+          console.log("event", parameters.action.metadata.contentType);
+          var visuals = parameters.visuals;
+          var interactionttype = parameters.action.metadata.contentType;
+
+          if (parameters.displayType == "poster") {
+            // Add unique class
+            var isid = $interaction[0].id;
+            if (!isid) {
+              var unique_class = $interaction[0].classList[2];
+              unca.push(unique_class);
+              var count = [];
+              unca.forEach(function (i) {
+                count[i] = (count[i] || 0) + 1;
+              });
+              var unc = unique_class + "-" + count[unique_class];
+              // console.log("unc?>?", unc);
+              if (unc) {
+                $interaction.attr("id", unc);
+              }
+            }
+            var $interactioncontent = $interaction
+              .children("div.h5p-interaction-outer")
+              .children("div.h5p-interaction-inner.h5p-frame");
+
+            if (
+              "Text" != interactionttype ||
+              "Link" != interactionttype ||
+              "Image" != interactionttype ||
+              "IVHotspot" != interactionttype
+            ) {
+              // Main wrapper css updates
+              $interactioncontent.css({
+                background: visuals.backgroundColor,
+                color: visuals.VisualtextColor,
+              });
+
+              // Css input for the buttons.
+              if (
+                $interactioncontent
+                  .children(".h5p-question-buttons")
+                  .children("button").length != 0
+              ) {
+                $interactioncontent
+                  .children(".h5p-question-buttons")
+                  .children("button")
+                  .css({
+                    background: visuals.Submitbgcolor,
+                    color: visuals.Submittextcolor,
+                  });
+              }
+
+              // Css input for the button with change behaviour.
+              if (
+                $interactioncontent.children(".h5p-question-buttons").length !=
+                0
+              ) {
+                $interactioncontent
+                  .children(".h5p-question-buttons")
+                  .bind("DOMSubtreeModified", function () {
+                    $interactioncontent
+                      .children(".h5p-question-buttons")
+                      .children("button")
+                      .css({
+                        background: visuals.Submitbgcolor,
+                        color: visuals.Submittextcolor,
+                      });
+                  });
+              }
+
+              // Css update for the question content.
+              if (
+                $interactioncontent
+                  .children(".h5p-question-content")
+                  .children("ul.h5p-answers")
+                  .children("li.h5p-answer")
+                  .children(".h5p-alternative-container").length != 0
+              ) {
+                $interactioncontent
+                  .children(".h5p-question-content")
+                  .children("ul.h5p-answers")
+                  .children("li.h5p-answer")
+                  .children(".h5p-alternative-container")
+                  .css({
+                    background: visuals.backgroundColor,
+                    color: visuals.VisualtextColor,
+                  });
+              }
+
+              // Css update for go to question H5p activity.
+              if ("GoToQuestion" == interactionttype) {
+                $interactioncontent.children(".h5p-gotoquestion-wrapper").css({
+                  background: visuals.backgroundColor,
+                });
+                $interactioncontent
+                  .children(".h5p-gotoquestion-wrapper")
+                  .children(".h5p-gotoquestion-text")
+                  .css({
+                    background: visuals.backgroundColor,
+                    color: visuals.VisualtextColor,
+                  });
+                $interactioncontent
+                  .children(".h5p-gotoquestion-wrapper")
+                  .children(".h5p-gotoquestion-choices")
+                  .css({
+                    background: visuals.backgroundColor,
+                    color: visuals.VisualtextColor,
+                  });
+              }
+              // console.log("type", $);
+              if (interactionttype == "MultiChoice") {
+                if (unc) {
+                  var custom_css =
+                    "#" +
+                    unc +
+                    " li.h5p-answer .h5p-alternative-container:before {color:" +
+                    visuals.VisualtextColor +
+                    " !important}";
+                  var css = custom_css,
+                    head =
+                      document.head || document.getElementsByTagName("head")[0],
+                    style = document.createElement("style");
+
+                  head.appendChild(style);
+                  style.type = "text/css";
+                  if (style.styleSheet) {
+                    // This is required for IE8 and below.
+                    style.styleSheet.cssText = css;
+                  } else {
+                    style.appendChild(document.createTextNode(css));
+                  }
+                }
+              }
+            }
+            if ("Link" === interactionttype) {
+              $interactioncontent.children().css({
+                background: visuals.backgroundColor,
+                color: visuals.VisualtextColor,
+              });
+              // unc color
+              if (unc) {
+                // console.log(unc);
+                var custom_css =
+                  "#" +
+                  unc +
+                  " .h5p-link:after {color:" +
+                  visuals.VisualtextColor +
+                  " !important}";
+                // console.log("custom_css", custom_css);
+                var css = custom_css,
+                  head =
+                    document.head || document.getElementsByTagName("head")[0],
+                  style = document.createElement("style");
+
+                head.appendChild(style);
+                style.type = "text/css";
+                if (style.styleSheet) {
+                  // This is required for IE8 and below.
+                  style.styleSheet.cssText = css;
+                } else {
+                  style.appendChild(document.createTextNode(css));
+                }
+              }
+            }
+          }
+          // Button Display 
+          if (parameters.displayType == "button") {
+            // Append css here
+            $interaction.children(".h5p-interaction-button").css({
+              "background-color": visuals.iconbackgroundColor,
+            });
+
+            $interaction
+              .children("div.h5p-interaction-label.h5p-interaction")
+              .css({
+                "background-color": visuals.backgroundColor,
+              });
+
+            $interaction
+              .children("div.h5p-interaction-label.h5p-interaction")
+              .children(".h5p-interaction-label-text")
+              .css({
+                color: visuals.VisualtextColor,
+              });
+            var i = self.$container.find(".h5p-dialog-wrapper");
+
+            i.children(".h5p-dialog").css({
+              background: visuals.backgroundColor,
+            });
+            // console.log("$interaction", $interaction);
+            // console.log("self", self);
+            // var promise = new Promise((resolve, reject) => {
+            //   if (
+            //     self.$container
+            //       .find(".h5p-dialog-wrapper .h5p-dialog .h5p-dialog-inner")
+            //       .children(".h5p-dialog-interaction").length != 0
+            //   ) {
+            //     return resolve("true");
+            //   }else{
+            //     console.log("false");
+            //   }
+            // });
+            // promise.then(() => {
+            //   console.log(
+            //     "self",
+            //     self.$container
+            //       .find(".h5p-dialog-wrapper .h5p-dialog .h5p-dialog-inner")
+            //       .children(".h5p-dialog-interaction")
+            //   );
+            //   console.log("123");
+            // });
+
+            // if (self.$container.find(".h5p-dialog-wrapper .h5p-dialog .h5p-dialog-inner").children(".h5p-dialog-interaction").length != 0) {
+            //   self.$container
+            //     .find(".h5p-dialog-wrapper .h5p-dialog .h5p-dialog-inner")
+            //     .children(".h5p-dialog-interaction")
+            //     .bind("DOMSubtreeModified", function () {
+            //       self.$container
+            //         .find(".h5p-dialog-wrapper .h5p-dialog .h5p-dialog-inner")
+            //         .children(".h5p-dialog-interaction")
+            //         .css({
+            //           background: s.Submitbgcolor,
+            //           color: s.Submittextcolor,
+            //         });
+            //     });
+            // }
+            var csstime = setInterval(() => {
+              if (
+                self.$container
+                  .find(".h5p-dialog-wrapper .h5p-dialog .h5p-dialog-inner")
+                  .children(".h5p-dialog-interaction").length != 0
+              ) {
+                var u = self.$container
+                  .find(".h5p-dialog-wrapper .h5p-dialog .h5p-dialog-inner")
+                  .children(".h5p-dialog-interaction");
+
+                u.css({
+                  background: visuals.backgroundColor,
+                  color: visuals.VisualtextColor,
+                });
+                clearInterval(csstime);
+              }
+              
+            }, 300);
+
+
+            // setTimeout(() => {
+
+            //   console.log(
+            //     "self",
+            //     self.$container.find(
+            //       ".h5p-dialog-wrapper .h5p-dialog .h5p-dialog-inner"
+            //     )
+            //   );
+              
+            //   var u = self.$container
+            //     .find(".h5p-dialog-wrapper .h5p-dialog .h5p-dialog-inner")
+            //     .children(".h5p-dialog-interaction");
+
+            //   u.css({
+            //     background: visuals.backgroundColor,
+            //     color: visuals.VisualtextColor,
+            //   });
+
+            //   u.children(".h5p-question-buttons").children("button").css({
+            //     background: visuals.Submitbgcolor,
+            //     color: visuals.Submittextcolor,
+            //   });
+
+            //   u.children(".h5p-question-content")
+            //     .children("ul.h5p-answers")
+            //     .children("li.h5p-answer")
+            //     .children("div.h5p-alternative-container")
+            //     .css({
+            //       background: visuals.backgroundColor,
+            //     });
+
+            // }, 3000);
+            
+            
+            
+            // console.log("i>>", i);
+            // var dailoginner = self.$container.find(
+            //   ".h5p-dialog-wrapper .h5p-dialog .h5p-dialog-inner"
+            // );
+            // dailoginner.click(function (e) {
+            //   setTimeout(function() {
+            //     console.log(
+            //       "u>>",
+            //       i
+            //         .children(".h5p-dialog")
+            //         .children("div.h5p-dialog-inner")
+            //         .children("div.h5p-dialog-interaction")
+            //       // .children(".h5p-dialog-interaction")
+            //     );
+            //     console.log("dailoginner", this);
+            //   }, 400);
+            // });
+          }
+    }
   });
 
   // The interaction is about to be hidden.
