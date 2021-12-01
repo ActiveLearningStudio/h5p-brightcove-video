@@ -68,6 +68,11 @@
       "machineName": "H5PEditor.BrightcoveInteractiveVideo",
       "majorVersion": 1,
       "minorVersion": 0
+    },
+    {
+      "machineName": "H5PEditor.BrightcoveSearch",
+      "majorVersion": 1,
+      "minorVersion": 0
     }
   ]
 }

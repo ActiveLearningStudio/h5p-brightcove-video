@@ -17,7 +17,8 @@
             "type": "text",
             "label": "Video ID",
             "description": "Brightcove Video ID",
-            "importance": "high"
+            "importance": "high",
+            "widget": "brightcoveSearch"
           },
           {
             "name": "files",
