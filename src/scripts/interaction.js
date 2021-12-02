@@ -475,7 +475,119 @@ function Interaction(parameters, player, previousState) {
     var $dialogContent = $(isGotoClickable ? '<a>' : '<div>', {
       'class': 'h5p-dialog-interaction h5p-frame'
     });
+    if (parameters.displayType == "button") {
+      var u = $dialogContent;
+      if (u != null) {
+        var visuals = parameters.visuals;
+        console.log("parameters", parameters);
+        console.log("visuals", visuals);
+        console.log("dialogContent", u);
+        u.css({
+          background: visuals.backgroundColor,
+          color: visuals.VisualtextColor,
+        });
+        setTimeout(() => {
+          u.children(".h5p-question-buttons").children("button").css({
+            background: visuals.Submitbgcolor,
+            color: visuals.Submittextcolor,
+          });
+          u.children(".h5p-question-content")
+            .children("ul.h5p-answers")
+            .children("li.h5p-answer")
+            .children("div.h5p-alternative-container")
+            .css({
+              background: visuals.backgroundColor,
+            });
+          // Css update for the question content.
+          if (
+            u.children(".h5p-question-content").find(".summary-options ul>li")
+              .length != 0
+          ) {
+            u.children(".h5p-question-content")
+              .children(".summary-content")
+              .find(".summary-options ul>li")
+              .css({
+                background: visuals.backgroundColor,
+                color: visuals.VisualtextColor,
+                border: "none",
+              });
+          }
 
+          // Css update for the question content.
+          if (
+            u.children(".h5p-question-content").find(".h5p-sc-alternative")
+              .length != 0
+          ) {
+            u.children(".h5p-question-content")
+              .find(".h5p-sc-alternative")
+              .css({
+                background: visuals.backgroundColor,
+                color: visuals.VisualtextColor,
+              });
+          }
+          // console.log("<<u>>", u[0].classList[3]);
+          u.counter = u.counter === undefined ? 1 : u.counter + 1;
+          var h5pentype = u[0].classList[3];
+          var buttondomid = h5pentype + "-button-" + u.counter;
+          // console.log("buttondomid", buttondomid);
+          $dialogWrapper.find(".h5p-dialog").attr("id", buttondomid);
+          if (buttondomid) {
+            var css = visuals;
+            console.log("css", css.Submitbgcolor);
+            var custom_css =
+              "#" +
+              buttondomid +
+              " .h5p-dialog-inner .h5p-dialog-interaction .h5p-question-buttons button { background: " +
+              css.Submitbgcolor +
+              " !important ; color:" +
+              css.Submittextcolor +
+              " !important ;} .h5p-interactive-video #" +
+              buttondomid +
+              " .h5p-dialog-close:before{color:" +
+              css.VisualtextColor +
+              " !important} #" +
+              buttondomid +
+              " .h5p-answer .h5p-alternative-container:before{color:" +
+              css.VisualtextColor +
+              "}  #" +
+              buttondomid +
+              " .h5p-true-false-answer[role='radio']{background:" +
+              css.backgroundColor +
+              "; border:" +
+              css.backgroundColor +
+              ";} #" +
+              buttondomid +
+              " .h5p-true-false-answer:before{color:" +
+              css.VisualtextColor +
+              "} #" +
+              buttondomid +
+              " .h5p-answer[aria-checked='true'] .h5p-alternative-container{color:" +
+              css.VisualtextColor +
+              " !important} #" +
+              buttondomid +
+              " .h5p-question-feedback-content{ color:" +
+              css.Submittextcolor;
+            +"}; #";
+            var css = custom_css,
+              head = document.body || document.getElementsByTagName("body")[0],
+              style = document.createElement("style");
+            style.id = "h5p-custom-dailog-css";
+            if (jQuery("body style#" + style.id).length != 0) {
+              jQuery("body style#" + style.id).remove();
+            }
+            head.appendChild(style);
+            style.type = "text/css";
+            if (style.styleSheet) {
+              // This is required for IE8 and below.
+              style.styleSheet.cssText = css;
+            } else {
+              style.appendChild(document.createTextNode(css));
+            }
+          }
+        }, 100);
+      }
+    }
+    
     if (!isGotoClickable && isScrollableLibrary(library)) {
       $dialogContent.attr('tabindex', '0'); // Make content scrollable
     }

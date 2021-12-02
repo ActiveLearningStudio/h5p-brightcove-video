@@ -230,7 +230,7 @@
   /* Default focus effect - purple */
   top: -0.167em;
   left: -0.167em;
-  border: 0.167em solid #e489f3;
+  /* border: 0.167em solid #e489f3; */
 }
 
 .h5p-interactive-video div:active > .h5p-interaction-button {

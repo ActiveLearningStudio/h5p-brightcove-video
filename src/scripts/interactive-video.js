@@ -108,6 +108,45 @@ function InteractiveVideo(params, id, contentData) {
     self.showBookmarksmenuOnLoad = (params.override.showBookmarksmenuOnLoad !== undefined ? params.override.showBookmarksmenuOnLoad : false);
     self.preventSkipping = params.override.preventSkipping || false;
     self.deactivateSound = params.override.deactivateSound || false;
+    self.attachcustomcss = params.override.attachcustomcss || false;
+    self.hideh5pactionoption = params.override.hideh5pactionoption || false;
+    if (self) {
+      var s = self;
+      if (s.attachcustomcss != "false") {
+        var css = s.attachcustomcss,
+          head = document.body || document.getElementsByTagName("body")[0],
+          style = document.createElement("style");
+        style.id = "h5p-custom-ui-updates";
+        if (jQuery("body style#" + style.id).length != 0) {
+          jQuery("body style#" + style.id).remove();
+        }
+        head.appendChild(style);
+        style.type = "text/css";
+        if (style.styleSheet) {
+          // This is required for IE8 and below.
+          style.styleSheet.cssText = css;
+        } else {
+          style.appendChild(document.createTextNode(css));
+        }
+      }
+      if (s.hideh5pactionoption == true) {
+        var css = "ul.h5p-actions {display: none;}",
+          head = document.body || document.getElementsByTagName("body")[0],
+          style = document.createElement("style");
+        style.id = "h5p-hide-ui-action-bar";
+        if (jQuery("body style#" + style.id).length != 0) {
+          jQuery("body style#" + style.id).remove();
+        }
+        head.appendChild(style);
+        style.type = "text/css";
+        if (style.styleSheet) {
+          // This is required for IE8 and below.
+          style.styleSheet.cssText = css;
+        } else {
+          style.appendChild(document.createTextNode(css));
+        }
+      }
+    }
   }
   // Translated UI text defaults
   self.l10n = $.extend({
@@ -1026,8 +1065,6 @@ InteractiveVideo.prototype.initInteraction = function (index) {
   // handle display event
   interaction.on('display', function (event) {
     var $interaction = event.data;
-    // console.log("self", self);
-
 
     $interaction.appendTo(self.$overlay);
 
@@ -1063,7 +1100,6 @@ InteractiveVideo.prototype.initInteraction = function (index) {
 
     self.toggleEndscreen(false);
     if (parameters.action.metadata.contentType != "undefined") {
-          console.log("event", parameters.action.metadata.contentType);
           var visuals = parameters.visuals;
           var interactionttype = parameters.action.metadata.contentType;
 
@@ -1078,7 +1114,6 @@ InteractiveVideo.prototype.initInteraction = function (index) {
                 count[i] = (count[i] || 0) + 1;
               });
               var unc = unique_class + "-" + count[unique_class];
-              // console.log("unc?>?", unc);
               if (unc) {
                 $interaction.attr("id", unc);
               }
@@ -1129,6 +1164,12 @@ InteractiveVideo.prototype.initInteraction = function (index) {
                         background: visuals.Submitbgcolor,
                         color: visuals.Submittextcolor,
                       });
+                    $interactioncontent
+                      .children(".h5p-question-feedback")
+                      .find(".h5p-question-feedback-content")
+                      .css({
+                        color: visuals.Submittextcolor,
+                      });
                   });
               }
 
@@ -1148,6 +1189,52 @@ InteractiveVideo.prototype.initInteraction = function (index) {
                   .css({
                     background: visuals.backgroundColor,
                     color: visuals.VisualtextColor,
+                  });
+              }
+              // Css update for the question content.
+              if (
+                $interactioncontent
+                  .children(".h5p-question-content")
+                  .find(".h5p-sc-alternative").length != 0
+              ) {
+                $interactioncontent
+                  .children(".h5p-question-content")
+                  .find(".h5p-sc-alternative")
+                  .css({
+                    background: visuals.backgroundColor,
+                    color: visuals.VisualtextColor,
+                  });
+              }
+              // Css update for the question content.
+              if (
+                $interactioncontent
+                  .children(".h5p-question-content")
+                  .find(".summary-options ul>li").length != 0
+              ) {
+                $interactioncontent
+                  .children(".h5p-question-content")
+                  .children(".summary-content")
+                  .find(".summary-options ul>li")
+                  .css({
+                    background: visuals.backgroundColor,
+                    color: visuals.VisualtextColor,
+                    border: "none",
+                  });
+              }
+              // Css update for the question content.
+              if (
+                $interactioncontent
+                  .children(".h5p-question-content")
+                  .children(".h5p-true-false-answers")
+                  .children(".h5p-true-false-answer").length != 0
+              ) {
+                $interactioncontent
+                  .children(".h5p-question-content")
+                  .children(".h5p-true-false-answers")
+                  .children(".h5p-true-false-answer")
+                  .css({
+                    background: visuals.backgroundColor,
+                    border: "none",
                   });
               }
 
@@ -1171,7 +1258,6 @@ InteractiveVideo.prototype.initInteraction = function (index) {
                     color: visuals.VisualtextColor,
                   });
               }
-              // console.log("type", $);
               if (interactionttype == "MultiChoice") {
                 if (unc) {
                   var custom_css =
@@ -1181,9 +1267,12 @@ InteractiveVideo.prototype.initInteraction = function (index) {
                     visuals.VisualtextColor +
                     " !important}";
                   var css = custom_css,
-                    head =
-                      document.head || document.getElementsByTagName("head")[0],
+                    head = document.body || document.getElementsByTagName("body")[0],
                     style = document.createElement("style");
+                  style.id = "h5p-custom-on-load-css";
+                  if (jQuery("body style#" + style.id).length != 0) {
+                    jQuery("body style#" + style.id).remove();
+                  }
 
                   head.appendChild(style);
                   style.type = "text/css";
@@ -1203,18 +1292,19 @@ InteractiveVideo.prototype.initInteraction = function (index) {
               });
               // unc color
               if (unc) {
-                // console.log(unc);
                 var custom_css =
                   "#" +
                   unc +
                   " .h5p-link:after {color:" +
                   visuals.VisualtextColor +
                   " !important}";
-                // console.log("custom_css", custom_css);
                 var css = custom_css,
-                  head =
-                    document.head || document.getElementsByTagName("head")[0],
+                  head = document.head || document.getElementsByTagName("head")[0],
                   style = document.createElement("style");
+                style.id = "h5p-link-on-load-css";
+                if (jQuery("body style#" + style.id).length != 0) {
+                  jQuery("body style#" + style.id).remove();
+                }
 
                 head.appendChild(style);
                 style.type = "text/css";
@@ -1251,115 +1341,6 @@ InteractiveVideo.prototype.initInteraction = function (index) {
             i.children(".h5p-dialog").css({
               background: visuals.backgroundColor,
             });
-            // console.log("$interaction", $interaction);
-            // console.log("self", self);
-            // var promise = new Promise((resolve, reject) => {
-            //   if (
-            //     self.$container
-            //       .find(".h5p-dialog-wrapper .h5p-dialog .h5p-dialog-inner")
-            //       .children(".h5p-dialog-interaction").length != 0
-            //   ) {
-            //     return resolve("true");
-            //   }else{
-            //     console.log("false");
-            //   }
-            // });
-            // promise.then(() => {
-            //   console.log(
-            //     "self",
-            //     self.$container
-            //       .find(".h5p-dialog-wrapper .h5p-dialog .h5p-dialog-inner")
-            //       .children(".h5p-dialog-interaction")
-            //   );
-            //   console.log("123");
-            // });
-
-            // if (self.$container.find(".h5p-dialog-wrapper .h5p-dialog .h5p-dialog-inner").children(".h5p-dialog-interaction").length != 0) {
-            //   self.$container
-            //     .find(".h5p-dialog-wrapper .h5p-dialog .h5p-dialog-inner")
-            //     .children(".h5p-dialog-interaction")
-            //     .bind("DOMSubtreeModified", function () {
-            //       self.$container
-            //         .find(".h5p-dialog-wrapper .h5p-dialog .h5p-dialog-inner")
-            //         .children(".h5p-dialog-interaction")
-            //         .css({
-            //           background: s.Submitbgcolor,
-            //           color: s.Submittextcolor,
-            //         });
-            //     });
-            // }
-            var csstime = setInterval(() => {
-              if (
-                self.$container
-                  .find(".h5p-dialog-wrapper .h5p-dialog .h5p-dialog-inner")
-                  .children(".h5p-dialog-interaction").length != 0
-              ) {
-                var u = self.$container
-                  .find(".h5p-dialog-wrapper .h5p-dialog .h5p-dialog-inner")
-                  .children(".h5p-dialog-interaction");
-
-                u.css({
-                  background: visuals.backgroundColor,
-                  color: visuals.VisualtextColor,
-                });
-                clearInterval(csstime);
-              }
-              
-            }, 300);
-
-
-            // setTimeout(() => {
-
-            //   console.log(
-            //     "self",
-            //     self.$container.find(
-            //       ".h5p-dialog-wrapper .h5p-dialog .h5p-dialog-inner"
-            //     )
-            //   );
-              
-            //   var u = self.$container
-            //     .find(".h5p-dialog-wrapper .h5p-dialog .h5p-dialog-inner")
-            //     .children(".h5p-dialog-interaction");
-
-            //   u.css({
-            //     background: visuals.backgroundColor,
-            //     color: visuals.VisualtextColor,
-            //   });
-
-            //   u.children(".h5p-question-buttons").children("button").css({
-            //     background: visuals.Submitbgcolor,
-            //     color: visuals.Submittextcolor,
-            //   });
-
-            //   u.children(".h5p-question-content")
-            //     .children("ul.h5p-answers")
-            //     .children("li.h5p-answer")
-            //     .children("div.h5p-alternative-container")
-            //     .css({
-            //       background: visuals.backgroundColor,
-            //     });
-
-            // }, 3000);
-            
-            
-            
-            // console.log("i>>", i);
-            // var dailoginner = self.$container.find(
-            //   ".h5p-dialog-wrapper .h5p-dialog .h5p-dialog-inner"
-            // );
-            // dailoginner.click(function (e) {
-            //   setTimeout(function() {
-            //     console.log(
-            //       "u>>",
-            //       i
-            //         .children(".h5p-dialog")
-            //         .children("div.h5p-dialog-inner")
-            //         .children("div.h5p-dialog-interaction")
-            //       // .children(".h5p-dialog-interaction")
-            //     );
-            //     console.log("dailoginner", this);
-            //   }, 400);
-            // });
           }
     }
   });
