@@ -117,8 +117,8 @@ function InteractiveVideo(params, id, contentData) {
           head = document.body || document.getElementsByTagName("body")[0],
           style = document.createElement("style");
         style.id = "h5p-custom-ui-updates";
-        if (jQuery("body style#" + style.id).length != 0) {
-          jQuery("body style#" + style.id).remove();
+        if (H5P.jQuery("body style#" + style.id).length != 0) {
+          H5P.jQuery("body style#" + style.id).remove();
         }
         head.appendChild(style);
         style.type = "text/css";
@@ -134,8 +134,8 @@ function InteractiveVideo(params, id, contentData) {
           head = document.body || document.getElementsByTagName("body")[0],
           style = document.createElement("style");
         style.id = "h5p-hide-ui-action-bar";
-        if (jQuery("body style#" + style.id).length != 0) {
-          jQuery("body style#" + style.id).remove();
+        if (H5P.jQuery("body style#" + style.id).length != 0) {
+          H5P.jQuery("body style#" + style.id).remove();
         }
         head.appendChild(style);
         style.type = "text/css";
@@ -1270,8 +1270,8 @@ InteractiveVideo.prototype.initInteraction = function (index) {
                     head = document.body || document.getElementsByTagName("body")[0],
                     style = document.createElement("style");
                   style.id = "h5p-custom-on-load-css";
-                  if (jQuery("body style#" + style.id).length != 0) {
-                    jQuery("body style#" + style.id).remove();
+                  if (H5P.jQuery("body style#" + style.id).length != 0) {
+                    H5P.jQuery("body style#" + style.id).remove();
                   }
 
                   head.appendChild(style);
@@ -1302,8 +1302,8 @@ InteractiveVideo.prototype.initInteraction = function (index) {
                   head = document.head || document.getElementsByTagName("head")[0],
                   style = document.createElement("style");
                 style.id = "h5p-link-on-load-css";
-                if (jQuery("body style#" + style.id).length != 0) {
-                  jQuery("body style#" + style.id).remove();
+                if (H5P.jQuery("body style#" + style.id).length != 0) {
+                  H5P.jQuery("body style#" + style.id).remove();
                 }
 
                 head.appendChild(style);

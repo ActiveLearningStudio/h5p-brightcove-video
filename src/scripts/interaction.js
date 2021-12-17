@@ -572,8 +572,8 @@ function Interaction(parameters, player, previousState) {
               head = document.body || document.getElementsByTagName("body")[0],
               style = document.createElement("style");
             style.id = "h5p-custom-dailog-css";
-            if (jQuery("body style#" + style.id).length != 0) {
-              jQuery("body style#" + style.id).remove();
+            if (H5P.jQuery("body style#" + style.id).length != 0) {
+              H5P.jQuery("body style#" + style.id).remove();
             }
             head.appendChild(style);
             style.type = "text/css";
