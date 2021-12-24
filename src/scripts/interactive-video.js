@@ -1099,9 +1099,9 @@ InteractiveVideo.prototype.initInteraction = function (index) {
     }, 0);
 
     self.toggleEndscreen(false);
-    if (parameters.action.metadata.contentType != "undefined") {
+    if (parameters.action.library) {
           var visuals = parameters.visuals;
-          var interactionttype = parameters.action.metadata.contentType;
+          var interactionttype = parameters.action.library;
 
           if (parameters.displayType == "poster") {
             // Add unique class
@@ -1122,11 +1122,7 @@ InteractiveVideo.prototype.initInteraction = function (index) {
               .children("div.h5p-interaction-outer")
               .children("div.h5p-interaction-inner.h5p-frame");
 
-            if (
-              "Text" != interactionttype ||
-              "Link" != interactionttype ||
-              "Image" != interactionttype ||
-              "IVHotspot" != interactionttype
+            if ( interactionttype.includes("Text") || interactionttype.includes("Link") || interactionttype.includes("Image") || interactionttype.includes("IVHotspot")
             ) {
               // Main wrapper css updates
               $interactioncontent.css({
@@ -1239,7 +1235,7 @@ InteractiveVideo.prototype.initInteraction = function (index) {
               }
 
               // Css update for go to question H5p activity.
-              if ("GoToQuestion" == interactionttype) {
+              if (interactionttype.includes("GoToQuestion")) {
                 $interactioncontent.children(".h5p-gotoquestion-wrapper").css({
                   background: visuals.backgroundColor,
                 });
@@ -1258,7 +1254,7 @@ InteractiveVideo.prototype.initInteraction = function (index) {
                     color: visuals.VisualtextColor,
                   });
               }
-              if (interactionttype == "MultiChoice") {
+              if (interactionttype.includes("MultiChoice")) {
                 if (unc) {
                   var custom_css =
                     "#" +
@@ -1285,7 +1281,7 @@ InteractiveVideo.prototype.initInteraction = function (index) {
                 }
               }
             }
-            if ("Link" === interactionttype) {
+            if (interactionttype.includes("Link")) {
               $interactioncontent.children().css({
                 background: visuals.backgroundColor,
                 color: visuals.VisualtextColor,
