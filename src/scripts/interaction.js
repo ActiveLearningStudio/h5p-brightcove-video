@@ -911,7 +911,8 @@ function Interaction(parameters, player, previousState) {
     if (library !== 'H5P.IVHotspot') {
       // Add background
       $interaction.css('background', visuals.backgroundColor);
-
+      // Add unique Class
+      $interaction.addClass("interaction-number-" + player.nextInteractionToShow);
       // Add transparency css
       var backgroundColors = visuals.backgroundColor.split(',');
       if (backgroundColors[3]) {
