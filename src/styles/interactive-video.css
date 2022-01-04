@@ -1875,3 +1875,9 @@
 .h5p-interactive-video .h5p-control:not(.h5p-no-tooltip):hover > .h5p-interactive-video-tooltip {
   visibility: visible;
 }
+
+.h5p-content, .h5p-container, .h5p-brightcove, #curriki-player-wrapper {
+  width: inherit !important;
+  height: inherit !important;
+}
+
