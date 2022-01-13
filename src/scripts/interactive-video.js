@@ -3264,6 +3264,7 @@ InteractiveVideo.prototype.toggleFullScreen = function () {
   this.resizeInteractions();
 };
 
+InteractiveVideo.prototype.timeUpdateTimeout = null;
 /**
  * Called when the time of the video changes.
  * Makes sure to update all UI elements.
@@ -3300,7 +3301,7 @@ InteractiveVideo.prototype.timeUpdate = function (time, skipNextTimeUpdate) {
   }
 
   // TODO: We should probably use 'ontimeupdate' if supported by source
-  setTimeout(function () {
+  self.timeUpdateTimeout = setTimeout(function () {
     if (self.currentState === H5P.Video.PLAYING ||
       (self.currentState === H5P.Video.BUFFERING && self.lastState === H5P.Video.PLAYING)
     ) {
