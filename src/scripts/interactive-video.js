@@ -1122,7 +1122,7 @@ InteractiveVideo.prototype.initInteraction = function (index) {
               .children("div.h5p-interaction-outer")
               .children("div.h5p-interaction-inner.h5p-frame");
 
-            if ( interactionttype.includes("Text") || interactionttype.includes("Link") || interactionttype.includes("Image") || interactionttype.includes("IVHotspot")
+            if ( interactionttype.includes("Text") || interactionttype.includes("Link") || interactionttype.includes("Image")
             ) {
               // Main wrapper css updates
               $interactioncontent.css({
