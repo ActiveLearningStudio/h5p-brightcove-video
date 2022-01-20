@@ -475,7 +475,7 @@ function Interaction(parameters, player, previousState) {
     var $dialogContent = $(isGotoClickable ? '<a>' : '<div>', {
       'class': 'h5p-dialog-interaction h5p-frame'
     });
-    if (parameters.displayType == "button") {
+    if (parameters.displayType == "button" && !parameters.action.library.includes("H5P.Questionnaire")) {
       var u = $dialogContent;
       if (u != null) {
         var visuals = parameters.visuals;
