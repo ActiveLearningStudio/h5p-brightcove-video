@@ -1324,7 +1324,7 @@ InteractiveVideo.prototype.initInteraction = function (index) {
           }
         }
         // Button Display 
-        if (parameters.displayType == "button") {
+        if (parameters.displayType == "button" && !interactionttype.includes("H5P.Questionnaire")) {
           console.log("INSIDE Button");
           // Append css here
           $interaction.children(".h5p-interaction-button").css({
