@@ -1103,16 +1103,15 @@ InteractiveVideo.prototype.initInteraction = function (index) {
       var visuals = parameters.visuals;
       var interactionttype = parameters.action.library;
 
-      console.log("parameters.visuals", parameters.visuals);
-      console.log("css file->", window.H5PIntegration.loadedCss);
+      
 
       // let css_file = window.H5PIntegration.loadedCss.pop();
       // console.log("file length", typeof(css_file));
 
       if(window.H5PIntegration.loadedCss.includes('storage/brightcove/css')){
-        console.log("File Exists");
+        
       }else{
-        console.log("File not Exists");
+        
         if (parameters.displayType == "poster") {
           // Add unique class
           var isid = $interaction[0].id;
@@ -1136,8 +1135,8 @@ InteractiveVideo.prototype.initInteraction = function (index) {
           ) {
             // Main wrapper css updates
             $interactioncontent.css({
-              background: visuals.backgroundColor,
-              color: visuals.VisualtextColor,
+              background: visuals !== undefined && visuals.backgroundColor,
+              color: visuals !== undefined && visuals.VisualtextColor,
             });
 
             // Css input for the buttons.
