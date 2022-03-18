@@ -180,7 +180,7 @@ class Endscreen extends H5P.EventDispatcher {
     }
     
     if( typeof this.parent.contentData.standalone !== undefined && this.parent.contentData.standalone){
-      this.parent.triggerXAPIScored(this.parent.getUsersScore(), this.parent.getUsersMaxScore(), 'submitted-brightcove');
+      this.parent.triggerXAPIScored(this.parent.getUsersScore(), this.parent.getUsersMaxScore(), 'submitted-curriki');
     }
     
   }
