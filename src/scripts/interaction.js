@@ -1810,6 +1810,10 @@ function Interaction(parameters, player, previousState) {
    */
   self.repositionToWrapper = function ($wrapper) {
 
+    if (window.bcPlayerExternal) {
+      $wrapper = H5P.jQuery('video-js video');
+    }
+
     if ($interaction && library !== 'H5P.IVHotspot' && library !== 'H5P.FreeTextQuestion') {
       // Reset positions
       if (isRepositioned) {
