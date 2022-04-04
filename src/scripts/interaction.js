@@ -296,6 +296,11 @@ function Interaction(parameters, player, previousState) {
       height: 'initial'
     });
     self.trigger('display', $interaction);
+    // trigger XAPI consumed if not in editor mode
+    if(player.editor === undefined) {
+      var label = H5P.jQuery(parameters.label).text();
+      triggerXAPIConsumed(label);
+    }
     setTimeout(() => {
       if ($interaction) {
         // Transition in
@@ -304,6 +309,30 @@ function Interaction(parameters, player, previousState) {
     }, 0);
 
     return $interaction;
+  };
+
+  /**
+   * Create XAPI 'Consumed' for Label
+   */
+  const triggerXAPIConsumed =  (label) => {
+    var xAPIEvent = player.createXAPIEventTemplate({
+      id: 'http://activitystrea.ms/schema/1.0/consume',
+      display: {
+        'en-US': 'consumed'
+      }
+    }, {
+      result: {
+        completion: true
+      }
+    });
+
+    Object.assign(xAPIEvent.data.statement.object.definition, {
+      name:{
+        'en-US': label || 'Label'
+      }
+    });
+
+    player.trigger(xAPIEvent);
   };
 
   /**
