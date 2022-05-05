@@ -675,6 +675,8 @@ InteractiveVideo.prototype.getCurrentState = function () {
   var state = {
     progress: self.video.getCurrentTime(),
     answers: [],
+    score : [],
+    maxScore : [],
     interactionsProgress: self.interactions
       .slice()
       .sort((a, b) => a.getDuration().from - b.getDuration().from)
@@ -685,10 +687,18 @@ InteractiveVideo.prototype.getCurrentState = function () {
   if (self.interactions !== undefined) {
     for (let i = 0; i < self.interactions.length; i++) {
       state.answers[i] = self.interactions[i].getCurrentState();
+      const instance = self.interactions[i].getInstance();
+      const score = instance.getScore ? instance.getScore() : undefined;
+      const maxScore = instance.getMaxScore ? instance.getMaxScore() : undefined;
+      if(self.interactions[i].getProgress() !== undefined)
+      {
+        state.score[i] = score;
+        state.maxScore[i] = maxScore;
+      }
     }
   }
-
-  if (state.progress) {
+  self.endscreen.update(self.interactions);
+  if (state.progress && state.progress > 0) {
     return state;
   }
   else if (self.previousState && self.previousState.progress) {
