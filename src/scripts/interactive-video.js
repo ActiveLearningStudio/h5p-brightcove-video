@@ -1112,16 +1112,12 @@ InteractiveVideo.prototype.initInteraction = function (index) {
     if (parameters.action.library) {
       var visuals = parameters.visuals;
       var interactionttype = parameters.action.library;
-
-      
-
-      // let css_file = window.H5PIntegration.loadedCss.pop();
-      // console.log("file length", typeof(css_file));
-
-      if(window.H5PIntegration.loadedCss.includes('storage/brightcove/css')){
-        
-      }else{
-        
+     
+      let css_file = window.H5PIntegration.loadedCss.length > 0 ?
+        window.H5PIntegration.loadedCss[window.H5PIntegration.loadedCss.length -1] :
+        window.H5PIntegration.core.styles[window.H5PIntegration.core.styles.length -1];
+        console.log('css_file', css_file);
+      if(css_file.includes('storage/brightcove/css')){ }else{
         if (parameters.displayType == "poster") {
           // Add unique class
           var isid = $interaction[0].id;
@@ -1140,15 +1136,19 @@ InteractiveVideo.prototype.initInteraction = function (index) {
           var $interactioncontent = $interaction
             .children("div.h5p-interaction-outer")
             .children("div.h5p-interaction-inner.h5p-frame");
-
-          if ( interactionttype.includes("Text") || interactionttype.includes("Link") || interactionttype.includes("Image") || interactionttype.includes("IVHotspot")
+          if ( interactionttype.includes("Text") || interactionttype.includes("Link") ||  interactionttype.includes("Image") || 
+              interactionttype.includes("IVHotspot") ||interactionttype.includes("SingleChoiceSet") ||
+              interactionttype.includes("Blanks") ||interactionttype.includes("Table") ||
+              interactionttype.includes("Summary") ||interactionttype.includes("MultiChoice") ||
+              interactionttype.includes("DragQuestion") ||interactionttype.includes("DragText") ||
+              interactionttype.includes("GoToQuestion") || interactionttype.includes("TrueFalse")
           ) {
             // Main wrapper css updates
-            $interactioncontent.css({
-              background: visuals !== undefined && visuals.backgroundColor,
-              color: visuals !== undefined && visuals.VisualtextColor,
-            });
-
+              $interactioncontent.css({
+                background: visuals !== undefined && visuals.backgroundColor,
+                color: visuals !== undefined && visuals.VisualtextColor,
+              });
+              $($interactioncontent).find("p").attr('style', `color: ${visuals !== undefined && visuals.VisualtextColor} !important`)
             // Css input for the buttons.
             if (
               $interactioncontent
@@ -1334,7 +1334,6 @@ InteractiveVideo.prototype.initInteraction = function (index) {
         }
         // Button Display 
         if (parameters.displayType == "button" && !interactionttype.includes("H5P.Questionnaire")) {
-          console.log("INSIDE Button");
           // Append css here
           $interaction.children(".h5p-interaction-button").css({
             "background-color": visuals.iconbackgroundColor, 
@@ -1359,8 +1358,6 @@ InteractiveVideo.prototype.initInteraction = function (index) {
           });
         }
       }
-
-     
     }
   });
 
