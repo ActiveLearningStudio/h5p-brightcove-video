@@ -1130,15 +1130,27 @@ InteractiveVideo.prototype.initInteraction = function (index) {
           var $interactioncontent = $interaction
             .children("div.h5p-interaction-outer")
             .children("div.h5p-interaction-inner.h5p-frame");
-
-          if ( interactionttype.includes("Text") || interactionttype.includes("Link") || interactionttype.includes("Image") || interactionttype.includes("IVHotspot")
+            console.log('interactionttype', interactionttype);
+          if ( interactionttype.includes("Text") || 
+              interactionttype.includes("Link") || 
+              interactionttype.includes("Image") || 
+              interactionttype.includes("IVHotspot") ||
+              interactionttype.includes("SingleChoiceSet") ||
+              interactionttype.includes("Blanks") ||
+              interactionttype.includes("Table") ||
+              interactionttype.includes("Summary") ||
+              interactionttype.includes("MultiChoice") ||
+              interactionttype.includes("DragQuestion") ||
+              interactionttype.includes("DragText") ||
+              interactionttype.includes("GoToQuestion") ||
+              interactionttype.includes("TrueFalse")
           ) {
             // Main wrapper css updates
-            $interactioncontent.css({
-              background: visuals !== undefined && visuals.backgroundColor,
-              color: visuals !== undefined && visuals.VisualtextColor,
-            });
-
+              $interactioncontent.css({
+                background: visuals !== undefined && visuals.backgroundColor,
+                color: visuals !== undefined && visuals.VisualtextColor,
+              });
+              $($interactioncontent).find("p").attr('style', `color: ${visuals !== undefined && visuals.VisualtextColor} !important`)
             // Css input for the buttons.
             if (
               $interactioncontent
