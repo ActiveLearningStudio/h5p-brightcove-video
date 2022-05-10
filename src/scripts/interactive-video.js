@@ -1113,9 +1113,8 @@ InteractiveVideo.prototype.initInteraction = function (index) {
       var visuals = parameters.visuals;
       var interactionttype = parameters.action.library;
      
-      let css_file = window.H5PIntegration.loadedCss.length > 0 ?
-        window.H5PIntegration.loadedCss[window.H5PIntegration.loadedCss.length -1] :
-        window.H5PIntegration.core.styles[window.H5PIntegration.core.styles.length -1];
+      let css_file = window.H5PIntegration.loadedCss.length > 0 &&
+        window.H5PIntegration.loadedCss[window.H5PIntegration.loadedCss.length -1];
         
       if(css_file.includes('storage/brightcove/css')){
         var $interactioncontent = $interaction
