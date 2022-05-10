@@ -1116,179 +1116,228 @@ InteractiveVideo.prototype.initInteraction = function (index) {
       let css_file = window.H5PIntegration.loadedCss.length > 0 ?
         window.H5PIntegration.loadedCss[window.H5PIntegration.loadedCss.length -1] :
         window.H5PIntegration.core.styles[window.H5PIntegration.core.styles.length -1];
-        console.log('css_file', css_file);
-      if(css_file.includes('storage/brightcove/css')){ }else{
-        if (parameters.displayType == "poster") {
-          // Add unique class
-          var isid = $interaction[0].id;
-          if (!isid) {
-            var unique_class = $interaction[0].classList[2];
-            unca.push(unique_class);
-            var count = [];
-            unca.forEach(function (i) {
-              count[i] = (count[i] || 0) + 1;
-            });
-            var unc = unique_class + "-" + count[unique_class];
-            if (unc) {
-              $interaction.attr("id", unc);
-            }
-          }
+        
+      if(css_file.includes('storage/brightcove/css')){
+        var $interactioncontent = $interaction
+            .children("div.h5p-interaction-outer")
+            .children("div.h5p-interaction-inner.h5p-frame");
+        if (interactionttype.includes("IVHotspot")){
+          var text = $($interactioncontent).find("p")[0].innerText.replace('&#039;', `'`) ;
+          $($interactioncontent).find("p").html(text)
+        }
+       }else{
+        if(window.H5PIntegration.core.styles[0].includes('storage/brightcove/css')){
           var $interactioncontent = $interaction
             .children("div.h5p-interaction-outer")
             .children("div.h5p-interaction-inner.h5p-frame");
-          if ( interactionttype.includes("Text") || interactionttype.includes("Link") ||  interactionttype.includes("Image") || 
-              interactionttype.includes("IVHotspot") ||interactionttype.includes("SingleChoiceSet") ||
-              interactionttype.includes("Blanks") ||interactionttype.includes("Table") ||
-              interactionttype.includes("Summary") ||interactionttype.includes("MultiChoice") ||
-              interactionttype.includes("DragQuestion") ||interactionttype.includes("DragText") ||
-              interactionttype.includes("GoToQuestion") || interactionttype.includes("TrueFalse")
-          ) {
-            // Main wrapper css updates
-              $interactioncontent.css({
-                background: visuals !== undefined && visuals.backgroundColor,
-                color: visuals !== undefined && visuals.VisualtextColor,
+            if (interactionttype.includes("IVHotspot")){
+              var text = $($interactioncontent).find("p")[0].innerText.replace('&#039;', `'`) ;
+              $($interactioncontent).find("p").html(text)
+            }
+         }else{
+          if (parameters.displayType == "poster") {
+            // Add unique class
+            var isid = $interaction[0].id;
+            if (!isid) {
+              var unique_class = $interaction[0].classList[2];
+              unca.push(unique_class);
+              var count = [];
+              unca.forEach(function (i) {
+                count[i] = (count[i] || 0) + 1;
               });
-              $($interactioncontent).find("p").attr('style', `color: ${visuals !== undefined && visuals.VisualtextColor} !important`)
-            // Css input for the buttons.
-            if (
-              $interactioncontent
-                .children(".h5p-question-buttons")
-                .children("button").length != 0
-            ) {
-              $interactioncontent
-                .children(".h5p-question-buttons")
-                .children("button")
-                .css({
-                  background: visuals.Submitbgcolor,
-                  color: visuals.Submittextcolor,
-                });
+              var unc = unique_class + "-" + count[unique_class];
+              if (unc) {
+                $interaction.attr("id", unc);
+              }
             }
-
-            // Css input for the button with change behaviour.
-            if (
-              $interactioncontent.children(".h5p-question-buttons").length !=
-              0
+            var $interactioncontent = $interaction
+              .children("div.h5p-interaction-outer")
+              .children("div.h5p-interaction-inner.h5p-frame");
+            if ( interactionttype.includes("Text") || interactionttype.includes("Link") ||  interactionttype.includes("Image") || 
+                interactionttype.includes("IVHotspot") ||interactionttype.includes("SingleChoiceSet") ||
+                interactionttype.includes("Blanks") ||interactionttype.includes("Table") ||
+                interactionttype.includes("Summary") ||interactionttype.includes("MultiChoice") ||
+                interactionttype.includes("DragQuestion") ||interactionttype.includes("DragText") ||
+                interactionttype.includes("GoToQuestion") || interactionttype.includes("TrueFalse")
             ) {
-              $interactioncontent
-                .children(".h5p-question-buttons")
-                .bind("DOMSubtreeModified", function () {
-                  $interactioncontent
-                    .children(".h5p-question-buttons")
-                    .children("button")
-                    .css({
-                      background: visuals.Submitbgcolor,
-                      color: visuals.Submittextcolor,
-                    });
-                  $interactioncontent
-                    .children(".h5p-question-feedback")
-                    .find(".h5p-question-feedback-content")
-                    .css({
-                      color: visuals.Submittextcolor,
-                    });
+              // Main wrapper css updates
+                $interactioncontent.css({
+                  background: visuals !== undefined && visuals.backgroundColor,
+                  color: visuals !== undefined && visuals.VisualtextColor,
                 });
-            }
-
-            // Css update for the question content.
-            if (
-              $interactioncontent
-                .children(".h5p-question-content")
-                .children("ul.h5p-answers")
-                .children("li.h5p-answer")
-                .children(".h5p-alternative-container").length != 0
-            ) {
-              $interactioncontent
-                .children(".h5p-question-content")
-                .children("ul.h5p-answers")
-                .children("li.h5p-answer")
-                .children(".h5p-alternative-container")
-                .css({
+                $($interactioncontent).find("p").attr('style', `color: ${visuals !== undefined && visuals.VisualtextColor} !important`)
+              // Css input for the buttons.
+              if (
+                $interactioncontent
+                  .children(".h5p-question-buttons")
+                  .children("button").length != 0
+              ) {
+                $interactioncontent
+                  .children(".h5p-question-buttons")
+                  .children("button")
+                  .css({
+                    background: visuals.Submitbgcolor,
+                    color: visuals.Submittextcolor,
+                  });
+              }
+  
+              // Css input for the button with change behaviour.
+              if (
+                $interactioncontent.children(".h5p-question-buttons").length !=
+                0
+              ) {
+                $interactioncontent
+                  .children(".h5p-question-buttons")
+                  .bind("DOMSubtreeModified", function () {
+                    $interactioncontent
+                      .children(".h5p-question-buttons")
+                      .children("button")
+                      .css({
+                        background: visuals.Submitbgcolor,
+                        color: visuals.Submittextcolor,
+                      });
+                    $interactioncontent
+                      .children(".h5p-question-feedback")
+                      .find(".h5p-question-feedback-content")
+                      .css({
+                        color: visuals.Submittextcolor,
+                      });
+                  });
+              }
+  
+              // Css update for the question content.
+              if (
+                $interactioncontent
+                  .children(".h5p-question-content")
+                  .children("ul.h5p-answers")
+                  .children("li.h5p-answer")
+                  .children(".h5p-alternative-container").length != 0
+              ) {
+                $interactioncontent
+                  .children(".h5p-question-content")
+                  .children("ul.h5p-answers")
+                  .children("li.h5p-answer")
+                  .children(".h5p-alternative-container")
+                  .css({
+                    background: visuals.backgroundColor,
+                    color: visuals.VisualtextColor,
+                  });
+              }
+              // Css update for the question content.
+              if (
+                $interactioncontent
+                  .children(".h5p-question-content")
+                  .find(".h5p-sc-alternative").length != 0
+              ) {
+                $interactioncontent
+                  .children(".h5p-question-content")
+                  .find(".h5p-sc-alternative")
+                  .css({
+                    background: visuals.backgroundColor,
+                    color: visuals.VisualtextColor,
+                  });
+              }
+              // Css update for the question content.
+              if (
+                $interactioncontent
+                  .children(".h5p-question-content")
+                  .find(".summary-options ul>li").length != 0
+              ) {
+                $interactioncontent
+                  .children(".h5p-question-content")
+                  .children(".summary-content")
+                  .find(".summary-options ul>li")
+                  .css({
+                    background: visuals.backgroundColor,
+                    color: visuals.VisualtextColor,
+                    border: "none",
+                  });
+              }
+              // Css update for the question content.
+              if (
+                $interactioncontent
+                  .children(".h5p-question-content")
+                  .children(".h5p-true-false-answers")
+                  .children(".h5p-true-false-answer").length != 0
+              ) {
+                $interactioncontent
+                  .children(".h5p-question-content")
+                  .children(".h5p-true-false-answers")
+                  .children(".h5p-true-false-answer")
+                  .css({
+                    background: visuals.backgroundColor,
+                    border: "none",
+                  });
+              }
+  
+              // Css update for go to question H5p activity.
+              if (interactionttype.includes("GoToQuestion")) {
+                $interactioncontent.children(".h5p-gotoquestion-wrapper").css({
                   background: visuals.backgroundColor,
-                  color: visuals.VisualtextColor,
                 });
+                $interactioncontent
+                  .children(".h5p-gotoquestion-wrapper")
+                  .children(".h5p-gotoquestion-text")
+                  .css({
+                    background: visuals.backgroundColor,
+                    color: visuals.VisualtextColor,
+                  });
+                $interactioncontent
+                  .children(".h5p-gotoquestion-wrapper")
+                  .children(".h5p-gotoquestion-choices")
+                  .css({
+                    background: visuals.backgroundColor,
+                    color: visuals.VisualtextColor,
+                  });
+              }
+              if (interactionttype.includes("MultiChoice")) {
+                if (unc) {
+                  var custom_css =
+                    "#" +
+                    unc +
+                    " li.h5p-answer .h5p-alternative-container:before {color:" +
+                    visuals.VisualtextColor +
+                    " !important}";
+                  var css = custom_css,
+                    head = document.body || document.getElementsByTagName("body")[0],
+                    style = document.createElement("style");
+                  style.id = "h5p-custom-on-load-css";
+                  if (H5P.jQuery("body style#" + style.id).length != 0) {
+                    H5P.jQuery("body style#" + style.id).remove();
+                  }
+  
+                  head.appendChild(style);
+                  style.type = "text/css";
+                  if (style.styleSheet) {
+                    // This is required for IE8 and below.
+                    style.styleSheet.cssText = css;
+                  } else {
+                    style.appendChild(document.createTextNode(css));
+                  }
+                }
+              }
             }
-            // Css update for the question content.
-            if (
-              $interactioncontent
-                .children(".h5p-question-content")
-                .find(".h5p-sc-alternative").length != 0
-            ) {
-              $interactioncontent
-                .children(".h5p-question-content")
-                .find(".h5p-sc-alternative")
-                .css({
-                  background: visuals.backgroundColor,
-                  color: visuals.VisualtextColor,
-                });
-            }
-            // Css update for the question content.
-            if (
-              $interactioncontent
-                .children(".h5p-question-content")
-                .find(".summary-options ul>li").length != 0
-            ) {
-              $interactioncontent
-                .children(".h5p-question-content")
-                .children(".summary-content")
-                .find(".summary-options ul>li")
-                .css({
-                  background: visuals.backgroundColor,
-                  color: visuals.VisualtextColor,
-                  border: "none",
-                });
-            }
-            // Css update for the question content.
-            if (
-              $interactioncontent
-                .children(".h5p-question-content")
-                .children(".h5p-true-false-answers")
-                .children(".h5p-true-false-answer").length != 0
-            ) {
-              $interactioncontent
-                .children(".h5p-question-content")
-                .children(".h5p-true-false-answers")
-                .children(".h5p-true-false-answer")
-                .css({
-                  background: visuals.backgroundColor,
-                  border: "none",
-                });
-            }
-
-            // Css update for go to question H5p activity.
-            if (interactionttype.includes("GoToQuestion")) {
-              $interactioncontent.children(".h5p-gotoquestion-wrapper").css({
+            if (interactionttype.includes("Link")) {
+              $interactioncontent.children().css({
                 background: visuals.backgroundColor,
+                color: visuals.VisualtextColor,
               });
-              $interactioncontent
-                .children(".h5p-gotoquestion-wrapper")
-                .children(".h5p-gotoquestion-text")
-                .css({
-                  background: visuals.backgroundColor,
-                  color: visuals.VisualtextColor,
-                });
-              $interactioncontent
-                .children(".h5p-gotoquestion-wrapper")
-                .children(".h5p-gotoquestion-choices")
-                .css({
-                  background: visuals.backgroundColor,
-                  color: visuals.VisualtextColor,
-                });
-            }
-            if (interactionttype.includes("MultiChoice")) {
+              // unc color
               if (unc) {
                 var custom_css =
                   "#" +
                   unc +
-                  " li.h5p-answer .h5p-alternative-container:before {color:" +
+                  " .h5p-link:after {color:" +
                   visuals.VisualtextColor +
                   " !important}";
                 var css = custom_css,
-                  head = document.body || document.getElementsByTagName("body")[0],
+                  head = document.head || document.getElementsByTagName("head")[0],
                   style = document.createElement("style");
-                style.id = "h5p-custom-on-load-css";
+                style.id = "h5p-link-on-load-css";
                 if (H5P.jQuery("body style#" + style.id).length != 0) {
                   H5P.jQuery("body style#" + style.id).remove();
                 }
-
+  
                 head.appendChild(style);
                 style.type = "text/css";
                 if (style.styleSheet) {
@@ -1300,62 +1349,31 @@ InteractiveVideo.prototype.initInteraction = function (index) {
               }
             }
           }
-          if (interactionttype.includes("Link")) {
-            $interactioncontent.children().css({
+          // Button Display 
+          if (parameters.displayType == "button" && !interactionttype.includes("H5P.Questionnaire")) {
+            // Append css here
+            $interaction.children(".h5p-interaction-button").css({
+              "background-color": visuals.iconbackgroundColor, 
+            });
+  
+            $interaction
+              .children("div.h5p-interaction-label.h5p-interaction")
+              .css({
+                "background-color": visuals.backgroundColor,
+              });
+  
+            $interaction
+              .children("div.h5p-interaction-label.h5p-interaction")
+              .children(".h5p-interaction-label-text")
+              .css({
+                color: visuals.VisualtextColor,
+              });
+            var i = self.$container.find(".h5p-dialog-wrapper");
+  
+            i.children(".h5p-dialog").css({
               background: visuals.backgroundColor,
-              color: visuals.VisualtextColor,
             });
-            // unc color
-            if (unc) {
-              var custom_css =
-                "#" +
-                unc +
-                " .h5p-link:after {color:" +
-                visuals.VisualtextColor +
-                " !important}";
-              var css = custom_css,
-                head = document.head || document.getElementsByTagName("head")[0],
-                style = document.createElement("style");
-              style.id = "h5p-link-on-load-css";
-              if (H5P.jQuery("body style#" + style.id).length != 0) {
-                H5P.jQuery("body style#" + style.id).remove();
-              }
-
-              head.appendChild(style);
-              style.type = "text/css";
-              if (style.styleSheet) {
-                // This is required for IE8 and below.
-                style.styleSheet.cssText = css;
-              } else {
-                style.appendChild(document.createTextNode(css));
-              }
-            }
           }
-        }
-        // Button Display 
-        if (parameters.displayType == "button" && !interactionttype.includes("H5P.Questionnaire")) {
-          // Append css here
-          $interaction.children(".h5p-interaction-button").css({
-            "background-color": visuals.iconbackgroundColor, 
-          });
-
-          $interaction
-            .children("div.h5p-interaction-label.h5p-interaction")
-            .css({
-              "background-color": visuals.backgroundColor,
-            });
-
-          $interaction
-            .children("div.h5p-interaction-label.h5p-interaction")
-            .children(".h5p-interaction-label-text")
-            .css({
-              color: visuals.VisualtextColor,
-            });
-          var i = self.$container.find(".h5p-dialog-wrapper");
-
-          i.children(".h5p-dialog").css({
-            background: visuals.backgroundColor,
-          });
         }
       }
     }
