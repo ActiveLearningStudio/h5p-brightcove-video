@@ -1610,9 +1610,13 @@ InteractiveVideo.prototype.toggleBookmarksChooser = function (show, params = {ke
     this.controls.$bookmarksButton.attr('aria-expanded', show ? 'true' : false);
     this.controls.$more.attr('aria-expanded', show ? 'true' : 'false');
     this.controls.$bookmarksChooser
-      .css({maxHeight: show ? this.controlsCss.maxHeight : '32px'})
       .toggleClass('h5p-show', show)
       .toggleClass('h5p-transitioning', show || hiding);
+  }
+
+  if (this.controls.$bookmarksChooser && this.controlsCss && this.controlsCss.maxHeight) {
+    this.controls.$bookmarksChooser
+      .css({maxHeight: show ? this.controlsCss.maxHeight : '32px'})
   }
 
   if (show) {
@@ -1661,10 +1665,14 @@ InteractiveVideo.prototype.toggleEndscreensChooser = function (show, params = {k
     // -10px from stylesheet offset + offset if chooser goes beyond right border; will align to the right if too big
     const offset = -10 + Math.min(0, this.$container.outerWidth() - this.controls.$endscreensChooser.parent().offset().left - this.controls.$endscreensChooser.outerWidth()) + 'px';
     this.controls.$endscreensChooser
-      .css({maxHeight: show ? this.controlsCss.maxHeight : '32px'})
       .css({left: offset})
       .toggleClass('h5p-show', show)
       .toggleClass('h5p-transitioning', show || hiding);
+  }
+
+  if (this.controls.$endscreensChooser && this.controlsCss && this.controlsCss.maxHeight) {
+    this.controls.$endscreensChooser
+      .css({maxHeight: show ? this.controlsCss.maxHeight : '32px'})
   }
 
   if (show) {
