@@ -3,8 +3,8 @@
   "description": "Put texts, tasks and other medias on top of your video.",
   "license": "MIT",
   "contentType": "Media",
-  "majorVersion": 2,
-  "minorVersion": 0,
+  "majorVersion": 1,
+  "minorVersion": 1,
   "patchVersion": 0,
   "machineName": "H5P.BrightcoveInteractiveVideo",
   "author": "Asim",
@@ -57,8 +57,8 @@
     },
     {
       "machineName": "H5PEditor.BrightcoveInteractiveVideo",
-      "majorVersion": 2,
-      "minorVersion": 0
+      "majorVersion": 1,
+      "minorVersion": 1
     },
     {
       "machineName": "H5PEditor.BrightcoveSearch",
