@@ -446,7 +446,7 @@ function InteractiveVideo(params, id, contentData) {
           // restrict seeking video < startAt
           if ((self.startAt && currentTime < self.startAt)) {
             self.seek(self.startAt)
-            self.timeUpdate(self.startAt, true);
+            self.timeUpdate(self.startAt);
             return;
           }
 
@@ -1189,8 +1189,8 @@ InteractiveVideo.prototype.initInteraction = function (index) {
       var visuals = parameters.visuals;
       var interactionttype = parameters.action.library;
      
-      let css_file = window.H5PIntegration.loadedCss.length > 0 &&
-        window.H5PIntegration.loadedCss[window.H5PIntegration.loadedCss.length -1];
+      let css_file = window?.H5PIntegration?.loadedCss?.length > 0 &&
+        window?.H5PIntegration?.loadedCss[window.H5PIntegration.loadedCss.length -1];
         
       if(css_file.includes('storage/brightcove/css')){
         var $interactioncontent = $interaction
@@ -1201,7 +1201,7 @@ InteractiveVideo.prototype.initInteraction = function (index) {
           $($interactioncontent).find("p").html(text)
         }
        }else{
-        if(window.H5PIntegration.core.styles[0].includes('storage/brightcove/css')){
+        if(window?.H5PIntegration?.core?.styles[0]?.includes('storage/brightcove/css')){
           var $interactioncontent = $interaction
             .children("div.h5p-interaction-outer")
             .children("div.h5p-interaction-inner.h5p-frame");
